@@ -29,8 +29,7 @@ class AuthServiceProvider extends ServiceProvider
         Passport::routes(function ($router) {
             $router->forAccessTokens();
         }, ['middleware' => [
-            'cors',
-            'verified'
+            'cors'
         ]]);
 
         Passport::tokensExpireIn(now()->addDays(15));
