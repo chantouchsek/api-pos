@@ -17,4 +17,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::resource('categories', 'CategoryController');
+Route::namespace('Admin')->group(function () {
+
+    Route::resource('categories', 'CategoryController');
+
+});
+

@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Kyslik\ColumnSortable\Sortable;
+use Webpatser\Uuid\Uuid;
 
 /**
  * App\Models\Category
@@ -33,12 +35,48 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Category withTrashed()
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Category withoutTrashed()
  * @mixin \Eloquent
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Category sortable($defaultParameters = null)
  */
 class Category extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, Sortable;
 
+    /**
+     * The attributes that are mass sortable.
+     * @var array
+     */
+    public $sortable = [
+        'id',
+        'name',
+        'description',
+        'active',
+        'created_at',
+        'updated_at'
+    ];
+
+    /**
+     * The attributes that are mass assignable.
+     * @var array
+     */
     protected $fillable = [
         'name', 'description', 'active', 'uuid'
     ];
+
+    public static function boot()
+    {
+        parent::boot();
+        self::creating(function ($model) {
+            $model->uuid = (string)Uuid::generate(4);
+        });
+    }
+
+    /**
+     * Get the route key for the model.
+     *
+     * @return string
+     */
+    public function getRouteKeyName()
+    {
+        return 'uuid';
+    }
 }
