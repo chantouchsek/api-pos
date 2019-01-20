@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Admin\Category;
+namespace App\Http\Requests\Admin\Role;
 
 use App\Http\Requests\BaseRequest as FormRequest;
 
@@ -24,9 +24,7 @@ class StoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => [
-                'required', 'min:2', 'string'
-            ]
+            'name' => 'required|unique:roles,name'
         ];
     }
 }

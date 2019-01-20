@@ -4,7 +4,7 @@ namespace App\Http\Requests\Admin\Category;
 
 use App\Http\Requests\BaseRequest as FormRequest;
 
-class StoreRequest extends FormRequest
+class IndexRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,9 +24,7 @@ class StoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => [
-                'required', 'min:2', 'string'
-            ]
+            //
         ];
     }
 }

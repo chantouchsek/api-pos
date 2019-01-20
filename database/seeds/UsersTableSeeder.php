@@ -24,7 +24,8 @@ class UsersTableSeeder extends Seeder
             'address' => 'Phnom Penh',
             'active' => true,
             'phone_number' => '093234923',
-            'staff_id' => '0000001'
+            'locale' => 'en',
+            'birth_place' => 'Phnom Penh'
         ]);
         factory(\App\Models\User::class, 5)->create();
     }

@@ -2,8 +2,7 @@
 
 namespace App\Http\Requests\Admin\Category;
 
-use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
+use App\Http\Requests\BaseRequest as FormRequest;
 
 class UpdateRequest extends FormRequest
 {
@@ -25,9 +24,7 @@ class UpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['required', 'string', 'min:5', Rule::unique('categories', 'id')],
-            'active' => ['required', 'boolean'],
-            'description' => ['required', 'string', 'min:5']
+            'name' => ['required', 'min:3', 'string']
         ];
     }
 }

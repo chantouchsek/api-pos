@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Permission;
+namespace App\Http\Requests\Admin\Role;
 
-use App\Http\Requests\BaseRequest as Request;
+use App\Http\Requests\BaseRequest as FormRequest;
 
-class IndexRequest extends Request
+class UpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -13,7 +13,7 @@ class IndexRequest extends Request
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,8 @@ class IndexRequest extends Request
     public function rules()
     {
         return [
-            //
+            'name' => 'required|unique:roles,name,' . $this->id,
+            'permissions' => 'required',
         ];
     }
 }

@@ -23,6 +23,8 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        //
+
         parent::boot();
     }
 
@@ -36,6 +38,8 @@ class RouteServiceProvider extends ServiceProvider
         $this->mapApiRoutes();
 
         $this->mapWebRoutes();
+
+        //
     }
 
     /**
@@ -47,7 +51,7 @@ class RouteServiceProvider extends ServiceProvider
      */
     protected function mapWebRoutes()
     {
-        Route::middleware(['web', 'cors'])
+        Route::middleware('web')
             ->namespace($this->namespace)
             ->group(base_path('routes/web.php'));
     }
@@ -61,7 +65,11 @@ class RouteServiceProvider extends ServiceProvider
      */
     protected function mapApiRoutes()
     {
-        Route::middleware(['api', 'auth:api', 'cors', 'verified'])
+        Route::middleware([
+            'api',
+            'auth:api',
+            'cors',
+        ])
             ->namespace($this->namespace)
             ->group(base_path('routes/api.php'));
     }

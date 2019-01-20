@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\Searchable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Kyslik\ColumnSortable\Sortable;
@@ -36,10 +37,12 @@ use Webpatser\Uuid\Uuid;
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Category withoutTrashed()
  * @mixin \Eloquent
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Category sortable($defaultParameters = null)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Category search($search, $threshold = null, $entireText = false, $entireTextOnly = false)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Category searchRestricted($search, $restriction, $threshold = null, $entireText = false, $entireTextOnly = false)
  */
 class Category extends Model
 {
-    use SoftDeletes, Sortable;
+    use SoftDeletes, Sortable, Searchable;
 
     /**
      * The attributes that are mass sortable.
@@ -60,6 +63,26 @@ class Category extends Model
      */
     protected $fillable = [
         'name', 'description', 'active', 'uuid'
+    ];
+
+
+    /**
+     * Searchable rules.
+     *
+     * @var array
+     */
+    protected $searchable = [
+        /**
+         * Columns and their priority in search results.
+         * Columns with higher values are more important.
+         * Columns with equal values have equal importance.
+         *
+         * @var array
+         */
+        'columns' => [
+            'categories.name' => 10,
+            'categories.description' => 1
+        ]
     ];
 
     public static function boot()

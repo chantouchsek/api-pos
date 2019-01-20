@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Admin\Category;
+namespace App\Http\Requests\Admin\Permission;
 
 use App\Http\Requests\BaseRequest as FormRequest;
 
-class StoreRequest extends FormRequest
+class UpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,9 +24,7 @@ class StoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => [
-                'required', 'min:2', 'string'
-            ]
+            'name' => 'required|unique:permissions,name,' . $this->id
         ];
     }
 }

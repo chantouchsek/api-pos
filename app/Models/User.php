@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use App\Notifications\ResetPasswordNotification;
+use App\Traits\Searchable;
+use Illuminate\Contracts\Translation\HasLocalePreference;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -10,6 +12,10 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Passport\HasApiTokens;
 use League\OAuth2\Server\Exception\OAuthServerException;
+use Spatie\MediaLibrary\HasMedia\HasMedia;
+use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
+use Spatie\Permission\Traits\HasRoles;
+use Webpatser\Uuid\Uuid;
 
 /**
  * App\Models\User
@@ -60,10 +66,22 @@ use League\OAuth2\Server\Exception\OAuthServerException;
  * @method static \Illuminate\Database\Query\Builder|\App\Models\User withTrashed()
  * @method static \Illuminate\Database\Query\Builder|\App\Models\User withoutTrashed()
  * @mixin \Eloquent
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Spatie\MediaLibrary\Models\Media[] $media
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Spatie\Permission\Models\Permission[] $permissions
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Spatie\Permission\Models\Role[] $roles
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User permission($permissions)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User role($roles)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User search($search, $threshold = null, $entireText = false, $entireTextOnly = false)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User searchRestricted($search, $restriction, $threshold = null, $entireText = false, $entireTextOnly = false)
  */
-class User extends Authenticatable implements MustVerifyEmail
+class User extends Authenticatable implements MustVerifyEmail, HasMedia, HasLocalePreference
 {
-    use Notifiable, HasApiTokens, SoftDeletes;
+    use Notifiable,
+        HasApiTokens,
+        SoftDeletes,
+        HasRoles,
+        Searchable,
+        HasMediaTrait;
 
     /**
      * The attributes that are mass assignable.
@@ -71,7 +89,18 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'phone_number', 'avatar_url', 'username', 'gender', 'date_of_birth', 'address', 'active', 'staff_id'
+        'name',
+        'uuid',
+        'email',
+        'password',
+        'phone_number',
+        'avatar_url',
+        'username', 'gender',
+        'date_of_birth',
+        'address',
+        'active',
+        'staff_id',
+        'locale'
     ];
 
     /**
@@ -82,6 +111,20 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+
+    /**
+     *  Setup model event hooks
+     */
+    public static function boot()
+    {
+        parent::boot();
+        self::creating(function ($model) {
+            $model->uuid = (string)Uuid::generate(4);
+            $lastRecord = User::orderBy('id', 'desc')->withTrashed()->first();
+            $model->staff_id = str_pad($lastRecord ? $lastRecord->id + 1 : 1, 10, "0", STR_PAD_LEFT);
+        });
+    }
 
 
     /**
@@ -114,26 +157,6 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
-     * Generate Staff ID
-     * @param $id
-     * @return string
-     */
-    protected function generateStaffId($id)
-    {
-        $lastRecord = User::orderBy('id', 'desc')->withTrashed()->first();
-        if (!empty($lastRecord))
-            return str_pad($lastRecord->id + 1, 7, "0", STR_PAD_LEFT);
-    }
-
-    /**
-     * @param $value
-     */
-    public function setStaffIdAttribute($value)
-    {
-        $this->attributes['staff_id'] = $this->generateStaffId($value);
-    }
-
-    /**
      * Send the password reset notification.
      *
      * @param  string $token
@@ -142,5 +165,16 @@ class User extends Authenticatable implements MustVerifyEmail
     public function sendPasswordResetNotification($token)
     {
         $this->notify(new ResetPasswordNotification($token));
+    }
+
+
+    /**
+     * Get the preferred locale of the entity.
+     *
+     * @return string|null
+     */
+    public function preferredLocale()
+    {
+        return $this->locale;
     }
 }

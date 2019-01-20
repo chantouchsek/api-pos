@@ -23,9 +23,9 @@ trait Restable
     /**
      * Will result in an array with a paginator.
      *
-     * @param LengthAwarePaginator $items   The paginated items
-     * @param array                $data    The data
-     * @param array                $headers The headers that should be send with the JSON-response
+     * @param LengthAwarePaginator $items The paginated items
+     * @param array $data The data
+     * @param array $headers The headers that should be send with the JSON-response
      *
      * @return \Illuminate\Http\JsonResponse The JSON-response with the paginated results
      */
@@ -33,10 +33,10 @@ trait Restable
     {
         $data = array_merge($data, [
             'pagination' => [
-                'total_count'  => $items->total(),
-                'total_pages'  => $items->lastPage(),
+                'total_count' => $items->total(),
+                'total_pages' => $items->lastPage(),
                 'current_page' => $items->currentPage(),
-                'limit'        => $items->perPage(),
+                'limit' => $items->perPage(),
             ],
         ]);
 
@@ -46,7 +46,7 @@ trait Restable
     /**
      * Will return a response.
      *
-     * @param array $data    The given data
+     * @param array $data The given data
      * @param array $headers The given headers
      *
      * @return \Illuminate\Http\JsonResponse The JSON-response
@@ -80,7 +80,7 @@ trait Restable
      * Will result in a 201 code.
      *
      * @param string $message The given message
-     * @param array  $headers The headers that should be send with the JSON-response
+     * @param array $headers The headers that should be send with the JSON-response
      *
      * @return \Illuminate\Http\JsonResponse The JSON-response with the message
      */
@@ -95,7 +95,7 @@ trait Restable
      * Will result in an success message.
      *
      * @param string $message The given message
-     * @param array  $headers The headers that should be send with the JSON-response
+     * @param array $headers The headers that should be send with the JSON-response
      *
      * @return \Illuminate\Http\JsonResponse The JSON-response with the message
      */
@@ -103,7 +103,7 @@ trait Restable
     {
         return $this->respond([
             'success' => [
-                'message'     => $message,
+                'message' => $message,
                 'status_code' => $this->getStatusCode(),
             ],
         ], $headers);
@@ -113,7 +113,7 @@ trait Restable
      * Will result in a 400 error code.
      *
      * @param string $message The given message
-     * @param array  $headers The headers that should be send with the JSON-response
+     * @param array $headers The headers that should be send with the JSON-response
      *
      * @return \Illuminate\Http\JsonResponse The JSON-response with the error code
      */
@@ -128,7 +128,7 @@ trait Restable
      * Will result in an error.
      *
      * @param string $message The given message
-     * @param array  $headers The headers that should be send with the JSON-response
+     * @param array $headers The headers that should be send with the JSON-response
      *
      * @return \Illuminate\Http\JsonResponse The JSON-response with the error message
      */
@@ -136,7 +136,7 @@ trait Restable
     {
         return $this->respond([
             'error' => [
-                'message'     => $message,
+                'message' => $message,
                 'status_code' => $this->getStatusCode(),
             ],
         ], $headers);
@@ -146,7 +146,7 @@ trait Restable
      * Will result in a 401 error code.
      *
      * @param string $message The given message
-     * @param array  $headers The headers that should be send with the JSON-response
+     * @param array $headers The headers that should be send with the JSON-response
      *
      * @return \Illuminate\Http\JsonResponse The JSON-response with the error code
      */
@@ -161,7 +161,7 @@ trait Restable
      * Will result in a 403 error code.
      *
      * @param string $message The given message
-     * @param array  $headers The headers that should be send with the JSON-response
+     * @param array $headers The headers that should be send with the JSON-response
      *
      * @return \Illuminate\Http\JsonResponse The JSON-response with the error message
      */
@@ -190,7 +190,7 @@ trait Restable
      * Will result in a 405 error code.
      *
      * @param string $message The given message
-     * @param array  $headers The headers that should be send with the JSON-response
+     * @param array $headers The headers that should be send with the JSON-response
      *
      * @return \Illuminate\Http\JsonResponse The JSON-response with the error message
      */
@@ -205,7 +205,7 @@ trait Restable
      * Will result in a 422 error code.
      *
      * @param string $message The given message
-     * @param array  $headers The headers that should be send with the JSON-response
+     * @param array $headers The headers that should be send with the JSON-response
      *
      * @return \Illuminate\Http\JsonResponse The JSON-response with the error code
      */
@@ -220,7 +220,7 @@ trait Restable
      * Will result in a 429 error code.
      *
      * @param string $message The given message
-     * @param array  $headers The headers that should be send with the JSON-response
+     * @param array $headers The headers that should be send with the JSON-response
      *
      * @return \Illuminate\Http\JsonResponse The JSON-response with the error message
      */
@@ -235,7 +235,7 @@ trait Restable
      * Will result in a 500 error code.
      *
      * @param string $message The given message
-     * @param array  $headers The headers that should be send with the JSON-response
+     * @param array $headers The headers that should be send with the JSON-response
      *
      * @return \Illuminate\Http\JsonResponse The JSON-response with the error message
      */

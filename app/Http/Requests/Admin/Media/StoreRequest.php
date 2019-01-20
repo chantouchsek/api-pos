@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Requests\Admin\Category;
+namespace App\Http\Requests\Admin\Media;
 
-use App\Http\Requests\BaseRequest as FormRequest;
+use Illuminate\Foundation\Http\FormRequest;
 
 class StoreRequest extends FormRequest
 {
@@ -24,9 +24,7 @@ class StoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => [
-                'required', 'min:2', 'string'
-            ]
+            //
         ];
     }
 }

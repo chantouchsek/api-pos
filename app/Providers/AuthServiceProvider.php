@@ -29,11 +29,20 @@ class AuthServiceProvider extends ServiceProvider
         Passport::routes(function ($router) {
             $router->forAccessTokens();
         }, ['middleware' => [
-            'cors'
+            'cors',
         ]]);
 
         Passport::tokensExpireIn(now()->addDays(15));
 
         Passport::refreshTokensExpireIn(now()->addDays(30));
+
+        // Implicitly grant "super-admin" role all permissions
+        // This works in the app by using gate-related functions like auth()->user->can() and @can()
+        Gate::before(function ($user, $ability) {
+            if ($user->hasRole('Supper Admin')) {
+                return true;
+            }
+            return false;
+        });
     }
 }

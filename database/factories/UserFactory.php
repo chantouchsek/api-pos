@@ -26,5 +26,7 @@ $factory->define(App\Models\User::class, function (Faker $faker) {
         'address' => $faker->address,
         'active' => $faker->boolean,
         'phone_number' => $faker->phoneNumber,
+        'locale' => 'en',
+        'birth_place' => $faker->address
     ];
 });
