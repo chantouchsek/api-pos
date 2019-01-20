@@ -81,7 +81,8 @@ class Category extends Model
          */
         'columns' => [
             'categories.name' => 10,
-            'categories.description' => 1
+            'categories.description' => 1,
+            'active' => 5
         ]
     ];
 
