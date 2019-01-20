@@ -12,7 +12,7 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
-        User::create([
+        $user = User::create([
             'name' => 'Admin User',
             'email' => 'admin@test.com',
             'email_verified_at' => now(),
@@ -27,6 +27,7 @@ class UsersTableSeeder extends Seeder
             'locale' => 'en',
             'birth_place' => 'Phnom Penh'
         ]);
+        $user->assignRole('Supper Admin');
         factory(\App\Models\User::class, 5)->create();
     }
 }
