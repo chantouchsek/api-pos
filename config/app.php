@@ -82,7 +82,7 @@ return [
 
     'locales' => [
         'en' => 'EN',
-        'kh' => 'KH',
+        'km' => 'KM',
     ],
 
     /*
