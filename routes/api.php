@@ -19,6 +19,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::namespace('Admin')->group(function () {
 
+    Route::resource('users', 'UserController');
     Route::resource('categories', 'CategoryController');
     Route::resource('roles', 'RoleController', ['except' => ['create', 'edit']]);
     Route::resource('permissions', 'PermissionController', ['except' => ['create', 'edit']]);

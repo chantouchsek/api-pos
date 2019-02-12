@@ -10,6 +10,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Facades\Hash;
+use Kyslik\ColumnSortable\Sortable;
 use Laravel\Passport\HasApiTokens;
 use League\OAuth2\Server\Exception\OAuthServerException;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
@@ -73,6 +74,11 @@ use Webpatser\Uuid\Uuid;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User role($roles)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User search($search, $threshold = null, $entireText = false, $entireTextOnly = false)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User searchRestricted($search, $restriction, $threshold = null, $entireText = false, $entireTextOnly = false)
+ * @property string|null $uuid
+ * @property string|null $locale
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User sortable($defaultParameters = null)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereLocale($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereUuid($value)
  */
 class User extends Authenticatable implements MustVerifyEmail, HasMedia, HasLocalePreference
 {
@@ -81,7 +87,8 @@ class User extends Authenticatable implements MustVerifyEmail, HasMedia, HasLoca
         SoftDeletes,
         HasRoles,
         Searchable,
-        HasMediaTrait;
+        HasMediaTrait,
+        Sortable;
 
     /**
      * The attributes that are mass assignable.
@@ -95,12 +102,52 @@ class User extends Authenticatable implements MustVerifyEmail, HasMedia, HasLoca
         'password',
         'phone_number',
         'avatar_url',
-        'username', 'gender',
+        'username',
+        'gender',
         'date_of_birth',
         'address',
         'active',
         'staff_id',
         'locale'
+    ];
+
+
+    /**
+     * Searchable rules.
+     *
+     * @var array
+     */
+    protected $searchable = [
+        /**
+         * Columns and their priority in search results.
+         * Columns with higher values are more important.
+         * Columns with equal values have equal importance.
+         *
+         * @var array
+         */
+        'columns' => [
+            'users.name' => 10,
+            'users.email' => 9,
+            'users.phone_number' => 6
+        ]
+    ];
+
+    /**
+     * @var array
+     */
+    public $sortable = [
+        'name',
+        'uuid',
+        'email',
+        'password',
+        'phone_number',
+        'avatar_url',
+        'username',
+        'gender',
+        'date_of_birth',
+        'address',
+        'active',
+        'staff_id'
     ];
 
     /**
@@ -126,6 +173,16 @@ class User extends Authenticatable implements MustVerifyEmail, HasMedia, HasLoca
         });
     }
 
+
+    /**
+     * Get the route key for the model.
+     *
+     * @return string
+     */
+    public function getRouteKeyName()
+    {
+        return 'uuid';
+    }
 
     /**
      * Find the user identified by the given $identifier.
