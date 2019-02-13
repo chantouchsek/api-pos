@@ -2,9 +2,14 @@
 
 namespace App\Models;
 
+use App\Events\User\Created;
+use App\Events\User\Deleted;
+use App\Events\User\Updated;
 use App\Notifications\ResetPasswordNotification;
+use App\Traits\RevisionableUpgrade;
 use App\Traits\Searchable;
 use Illuminate\Contracts\Translation\HasLocalePreference;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -16,6 +21,7 @@ use League\OAuth2\Server\Exception\OAuthServerException;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use Spatie\Permission\Traits\HasRoles;
+use Venturecraft\Revisionable\RevisionableTrait;
 use Webpatser\Uuid\Uuid;
 
 /**
@@ -88,7 +94,9 @@ class User extends Authenticatable implements MustVerifyEmail, HasMedia, HasLoca
         HasRoles,
         Searchable,
         HasMediaTrait,
-        Sortable;
+        Sortable,
+        RevisionableTrait,
+        RevisionableUpgrade;
 
     /**
      * The attributes that are mass assignable.
@@ -111,6 +119,37 @@ class User extends Authenticatable implements MustVerifyEmail, HasMedia, HasLoca
         'locale'
     ];
 
+    /**
+     * @var bool
+     */
+    protected $revisionCreationsEnabled = true;
+    protected $revisionEnabled = true;
+    protected $revisionCleanup = true;
+    protected $historyLimit = 1000;
+    protected $revisionNullString = 'nothing';
+    protected $revisionUnknownString = 'unknown';
+
+    /**
+     * @var array
+     */
+    protected $revisionFormattedFieldNames = [
+        'staff_id' => 'Staff ID',
+        'phone_number' => 'Phone Number',
+    ];
+
+
+    /**
+     * The event map for the model.
+     *
+     * Allows for object-based events for native Eloquent events.
+     *
+     * @var array The event mapping.
+     */
+    protected $dispatchesEvents = [
+        'created' => Created::class,
+        'updated' => Updated::class,
+        'deleted' => Deleted::class
+    ];
 
     /**
      * Searchable rules.
@@ -156,7 +195,7 @@ class User extends Authenticatable implements MustVerifyEmail, HasMedia, HasLoca
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password', 'remember_token'
     ];
 
 
@@ -187,7 +226,7 @@ class User extends Authenticatable implements MustVerifyEmail, HasMedia, HasLoca
     /**
      * Find the user identified by the given $identifier.
      *
-     * @param $identifier email|name|staff_id
+     * @param $identifier
      * @return mixed
      */
     public function findForPassport($identifier)
@@ -233,5 +272,26 @@ class User extends Authenticatable implements MustVerifyEmail, HasMedia, HasLoca
     public function preferredLocale()
     {
         return $this->locale;
+    }
+
+    /**
+     * Get a User Devices ids.
+     *
+     * @return array
+     */
+    public function routeNotificationForOneSignal()
+    {
+        return $this->devices()->whereNotNull('player_id')
+            ->where('subscribed', true)
+            ->pluck('player_id')
+            ->toArray();
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function devices(): HasMany
+    {
+        return $this->hasMany(UserDevice::class);
     }
 }

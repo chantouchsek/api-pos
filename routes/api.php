@@ -18,7 +18,14 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::namespace('Admin')->group(function () {
-
+    Route::namespace('User')->prefix('users')->name('users.')->group(function () {
+        Route::post('{user}/upload-avatar', 'UploadAvatarController@upload')->name('upload-avatar');
+        Route::get('notifications', 'NotificationController@index')->name('notifications.index');
+        Route::get('notifications/markAsRead', 'NotificationController@readNotification')->name('notifications.read');
+        Route::get('notifications/unReads', 'NotificationController@unReads')->name('notifications.unread');
+        Route::put('devices/{playerId}', 'DeviceController@update');
+        Route::resource('devices', 'DeviceController', ['only' => ['index', 'store']]);
+    });
     Route::resource('users', 'UserController');
     Route::resource('categories', 'CategoryController');
     Route::resource('roles', 'RoleController', ['except' => ['create', 'edit']]);

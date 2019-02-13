@@ -15,12 +15,14 @@
         "doctrine/dbal": "^2.9",
         "fideloper/proxy": "^4.0",
         "kyslik/column-sortable": "^5.7",
+        "laravel-notification-channels/onesignal": "^1.2",
         "laravel/framework": "5.7.*",
         "laravel/passport": "^5.0",
         "laravel/tinker": "^1.0",
         "pusher/pusher-php-server": "~3.0",
         "spatie/laravel-medialibrary": "^7.0.0",
         "spatie/laravel-permission": "^2.29",
+        "venturecraft/revisionable": "^1.28",
         "webpatser/laravel-uuid": "^3.0"
     },
     "require-dev": {

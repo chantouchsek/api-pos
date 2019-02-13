@@ -59,6 +59,10 @@ class Handler extends ExceptionHandler
             return $this->respondNotFound();
         }
 
+        if ($exception instanceof \Spatie\Permission\Exceptions\UnauthorizedException) {
+            return $this->respondNotAllowed();
+        }
+
         return parent::render($request, $exception);
     }
 
