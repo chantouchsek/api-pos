@@ -24,12 +24,15 @@ class UserTransformer extends BaseTransformer
             'active' => (boolean)$item->active,
             'phone_number' => (string)$item->phone_number,
             'username' => (string)$item->username,
-            'gender' => $item->gender,
+            'gender' => (int)$item->gender,
             'date_of_birth' => $item->date_of_birth,
             'birth_place' => $item->birth_place,
             'address' => $item->address,
             'locale' => $item->locale,
-            'staff_id' => (string)$item->staff_id
+            'staff_id' => (string)$item->staff_id,
+            'start_working_date' => isset($item->start_working_date) ? $item->start_working_date->toDateString() : '',
+            'roles' => $item->roles->pluck('name')->all(),
+            'permissions' => $item->permissions->pluck('name')->all()
         ];
     }
 }

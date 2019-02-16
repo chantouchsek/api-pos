@@ -24,8 +24,7 @@ class UpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'first_name' => 'required|min:3|string',
-            'last_name' => 'required|min:3|string',
+            'name' => 'required|min:3|string',
             'email' => 'required|email|unique:users,email,' . $this->id,
             'password' => 'same:password_confirmation|min:6',
             'password_confirmation' => 'same:password|min:6',

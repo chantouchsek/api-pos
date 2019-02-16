@@ -12,6 +12,7 @@ use App\Models\Role;
 use App\Traits\Authorizable;
 use App\Transformers\UserTransformer;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
@@ -46,7 +47,11 @@ class UserController extends Controller
             $this->setPagination($request->get('limit'));
         }
 
-        $pagination = $user->search($request->get('q'), null, true)->sortable()->paginate($this->getPagination());
+        $pagination = $user->when($request->input('active'), function ($query) use ($request) {
+            return $query->where('active', $request->input('active', 1));
+        })
+            ->search($request->get('q'), null, true)
+            ->sortable()->paginate($this->getPagination());
 
         $users = $this->transformer->transformCollection(collect($pagination->items()));
 
@@ -72,9 +77,13 @@ class UserController extends Controller
         $input['password'] = Hash::make($input['phone_number']);
 
         $user = User::create($input);
-        $user->assignRole($input['roles']);
 
-        $allowedMimeTypes = ['image/jpeg', 'image/pipeg', 'image/gif'];
+        // $user->assignRole($input['roles']);
+
+        // Handle the user roles
+        $this->syncPermissions($request, $user);
+
+        $allowedMimeTypes = ['image/jpeg', 'image/pipeg', 'image/gif', 'image/png'];
 
         if ($request->has('avatar_url')) {
             $user->addMediaFromBase64($input['avatar_url'], $allowedMimeTypes)->toMediaCollection('avatars');
@@ -112,16 +121,17 @@ class UserController extends Controller
     {
         DB::beginTransaction();
         $input = $request->all();
+
         if (!empty($input['password'])) {
             $input['password'] = Hash::make($input['password']);
         } else {
             $input = array_except($input, array('password'));
         }
+
         $user->update($input);
-        $user->syncRoles($request->input('roles'));
 
         // Handle the user roles
-        // $this->syncPermissions($request, $user);
+        $this->syncPermissions($request, $user);
 
         DB::commit();
         return $this->respond(['data' => $this->transformer->transform($user), 'message' => 'User updated.']);
@@ -145,18 +155,18 @@ class UserController extends Controller
     }
 
     /**
-     * @param UpdateRequest $request
+     * @param Request $request
      * @param User $user
      * @return mixed
      */
-    private function syncPermissions(UpdateRequest $request, User $user)
+    private function syncPermissions($request, User $user)
     {
         // Get the submitted roles
-        $roles = $request->get('roles', []);
-        $permissions = $request->get('permissions', []);
+        $roles = $request->input('roles', []);
+        $permissions = $request->input('permissions', []);
 
         // Get the roles
-        $roles = Role::find($roles);
+        $roles = Role::whereIn('name', $roles)->get();
 
         // check for current role changes
         if (!$user->hasAllRoles($roles)) {

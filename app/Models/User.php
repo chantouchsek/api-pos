@@ -116,8 +116,14 @@ class User extends Authenticatable implements MustVerifyEmail, HasMedia, HasLoca
         'address',
         'active',
         'staff_id',
+        'start_working_date',
         'locale'
     ];
+    
+    /**
+     * @var array
+     */
+    protected $dates = ['start_working_date'];
 
     /**
      * @var bool
@@ -167,7 +173,11 @@ class User extends Authenticatable implements MustVerifyEmail, HasMedia, HasLoca
         'columns' => [
             'users.name' => 10,
             'users.email' => 9,
-            'users.phone_number' => 6
+            'users.phone_number' => 6,
+            'staff_id' => 5,
+            'date_of_birth' => 6,
+            'birth_place' => 6,
+            'address' => 6
         ]
     ];
 
