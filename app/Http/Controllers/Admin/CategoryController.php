@@ -43,7 +43,11 @@ class CategoryController extends Controller
                 $this->setPagination(Input::get('limit'));
             }
 
-            $pagination = $category->search($request->get('q'), null, true)->sortable()->paginate($this->getPagination());
+            $pagination = $category->when($request->input('active'), function ($query) use ($request) {
+                return $query->where('active', $request->input('active', 1));
+            })
+                ->search($request->get('q'), null, true)
+                ->sortable()->paginate($this->getPagination());
 
             $data = $this->transformer->transformCollection(collect($pagination->items()));
 

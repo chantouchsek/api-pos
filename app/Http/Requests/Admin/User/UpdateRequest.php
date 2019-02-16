@@ -28,7 +28,11 @@ class UpdateRequest extends FormRequest
             'email' => 'required|email|unique:users,email,' . $this->id,
             'password' => 'same:password_confirmation|min:6',
             'password_confirmation' => 'same:password|min:6',
-            'roles' => 'required'
+            'roles' => 'required|array',
+            'gender' => [
+                'required',
+                'in:1,2'
+            ]
         ];
     }
 }

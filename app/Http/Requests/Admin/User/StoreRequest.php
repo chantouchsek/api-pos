@@ -27,9 +27,13 @@ class StoreRequest extends FormRequest
             'name' => 'required|min:3|string',
             'email' => 'required|email|unique:users,email',
             // 'password' => 'required|same:confirm-password',
-            'roles' => 'required',
+            'roles' => 'required|array',
             'avatar' => 'image|mimes:jpeg,png,jpg|max:4056',
-            'phone_number' => 'required|min:7|max:12'
+            'phone_number' => 'required|min:7|max:12',
+            'gender' => [
+                'required',
+                'in:1,2'
+            ]
         ];
     }
 }

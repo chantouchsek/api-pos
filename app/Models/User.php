@@ -8,6 +8,7 @@ use App\Events\User\Updated;
 use App\Notifications\ResetPasswordNotification;
 use App\Traits\RevisionableUpgrade;
 use App\Traits\Searchable;
+use Carbon\Carbon;
 use Illuminate\Contracts\Translation\HasLocalePreference;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -119,11 +120,11 @@ class User extends Authenticatable implements MustVerifyEmail, HasMedia, HasLoca
         'start_working_date',
         'locale'
     ];
-    
+
     /**
      * @var array
      */
-    protected $dates = ['start_working_date'];
+    protected $dates = ['start_working_date', 'date_of_birth'];
 
     /**
      * @var bool
@@ -141,6 +142,14 @@ class User extends Authenticatable implements MustVerifyEmail, HasMedia, HasLoca
     protected $revisionFormattedFieldNames = [
         'staff_id' => 'Staff ID',
         'phone_number' => 'Phone Number',
+    ];
+
+    /**
+     * @var array
+     */
+    protected $casts = [
+        'start_working_date' => 'date:d-m-Y',
+        'date_of_birth' => 'date:d-m-Y',
     ];
 
 
@@ -303,5 +312,21 @@ class User extends Authenticatable implements MustVerifyEmail, HasMedia, HasLoca
     public function devices(): HasMany
     {
         return $this->hasMany(UserDevice::class);
+    }
+
+    /**
+     * @param $value
+     */
+    public function setStartWorkingDateAttribute($value)
+    {
+        $this->attributes['start_working_date'] = new Carbon($value);
+    }
+
+    /**
+     * @param $value
+     */
+    public function setDateOfBirthAttribute($value)
+    {
+        $this->attributes['date_of_birth'] = new Carbon($value);
     }
 }
