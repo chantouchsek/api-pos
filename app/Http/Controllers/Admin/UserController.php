@@ -73,7 +73,7 @@ class UserController extends Controller
     public function store(StoreRequest $request)
     {
         DB::beginTransaction();
-        $input = $request->all();
+        $input = $request->except(['avatar_url']);
         $input['password'] = Hash::make($input['phone_number']);
 
         $user = User::create($input);
@@ -86,8 +86,9 @@ class UserController extends Controller
         $allowedMimeTypes = ['image/jpeg', 'image/pipeg', 'image/gif', 'image/png'];
 
         if ($request->has('avatar_url')) {
-            $user->addMediaFromBase64($input['avatar_url'], $allowedMimeTypes)->toMediaCollection('avatars');
+            $user->addMediaFromBase64($request->get('avatar_url'), $allowedMimeTypes)->toMediaCollection('avatar');
         }
+
         DB::commit();
         return $this->respond([
             'data' => $this->transformer->transform($user),
@@ -120,7 +121,7 @@ class UserController extends Controller
     public function update(UpdateRequest $request, User $user)
     {
         DB::beginTransaction();
-        $input = $request->all();
+        $input = $request->except(['avatar_url']);
 
         if (!empty($input['password'])) {
             $input['password'] = Hash::make($input['password']);
@@ -132,6 +133,12 @@ class UserController extends Controller
 
         // Handle the user roles
         $this->syncPermissions($request, $user);
+
+        $allowedMimeTypes = ['image/jpeg', 'image/pipeg', 'image/gif', 'image/png'];
+
+        if ($request->has('avatar_url')) {
+            $user->addMediaFromBase64($request->get('avatar_url'), $allowedMimeTypes)->toMediaCollection('avatar');
+        }
 
         DB::commit();
         return $this->respond(['data' => $this->transformer->transform($user), 'message' => 'User updated.']);

@@ -21,6 +21,7 @@ use Laravel\Passport\HasApiTokens;
 use League\OAuth2\Server\Exception\OAuthServerException;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
+use Spatie\MediaLibrary\Models\Media;
 use Spatie\Permission\Traits\HasRoles;
 use Venturecraft\Revisionable\RevisionableTrait;
 use Webpatser\Uuid\Uuid;
@@ -328,5 +329,15 @@ class User extends Authenticatable implements MustVerifyEmail, HasMedia, HasLoca
     public function setDateOfBirthAttribute($value)
     {
         $this->attributes['date_of_birth'] = new Carbon($value);
+    }
+
+    /**
+     * @param Media|null $media
+     * @throws \Spatie\Image\Exceptions\InvalidManipulation
+     */
+    public function registerMediaConversions(Media $media = null)
+    {
+        $this->addMediaConversion('avatar')->crop('crop-center', 150, 150)
+            ->quality(100)->nonQueued();
     }
 }
