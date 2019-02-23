@@ -85,7 +85,7 @@ class UserController extends Controller
 
         $allowedMimeTypes = ['image/jpeg', 'image/pipeg', 'image/gif', 'image/png'];
 
-        if ($request->has('avatar_url')) {
+        if ($request->has('avatar_url') && strpos($request->get('avatar_url'), ';base64') !== false) {
             $user->addMediaFromBase64($request->get('avatar_url'), $allowedMimeTypes)->toMediaCollection('avatar');
         }
 
@@ -136,7 +136,8 @@ class UserController extends Controller
 
         $allowedMimeTypes = ['image/jpeg', 'image/pipeg', 'image/gif', 'image/png'];
 
-        if ($request->has('avatar_url')) {
+
+        if ($request->has('avatar_url') && strpos($request->get('avatar_url'), ';base64') !== false) {
             $user->addMediaFromBase64($request->get('avatar_url'), $allowedMimeTypes)->toMediaCollection('avatar');
         }
 

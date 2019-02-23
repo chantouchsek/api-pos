@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Traits\Searchable;
+use Kyslik\ColumnSortable\Sortable;
 use Spatie\Permission\Models\Role as BaseRole;
 
 /**
@@ -40,10 +41,12 @@ use Spatie\Permission\Models\Role as BaseRole;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Role whereGuardName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Role search($search, $threshold = null, $entireText = false, $entireTextOnly = false)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Role searchRestricted($search, $restriction, $threshold = null, $entireText = false, $entireTextOnly = false)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Role sortable($defaultParameters = null)
  */
 class Role extends BaseRole
 {
-    use Searchable;
+    use Searchable,
+        Sortable;
 
     /**
      * Searchable rules.
@@ -61,5 +64,15 @@ class Role extends BaseRole
         'columns' => [
             'permissions.name' => 10
         ]
+    ];
+
+
+    /**
+     * @var array
+     */
+    public $sortable = [
+        'name',
+        'id',
+        'guard_name'
     ];
 }

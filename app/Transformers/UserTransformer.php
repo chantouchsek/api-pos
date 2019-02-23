@@ -33,7 +33,7 @@ class UserTransformer extends BaseTransformer
             'start_working_date' => isset($item->start_working_date) ? $item->start_working_date->toDateString() : '',
             'roles' => $item->roles->pluck('name')->all(),
             'permissions' => $item->permissions->pluck('name')->all(),
-            'avatar_url' => (string)$item->hasMedia('avatar') ? config('app.url') . $item->getMedia('avatar')->first()->getUrl() : 'http://i.pravatar.cc/500?img=' . $item->id,
+            'avatar_url' => (boolean)$item->hasMedia('avatar') ? config('app.url') . $item->getMedia('avatar')->first()->getUrl() : 'http://i.pravatar.cc/500?img=' . $item->id,
         ];
     }
 }

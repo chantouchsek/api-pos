@@ -87,6 +87,10 @@ use Webpatser\Uuid\Uuid;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User sortable($defaultParameters = null)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereLocale($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereUuid($value)
+ * @property mixed|null $start_working_date
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\UserDevice[] $devices
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Venturecraft\Revisionable\Revision[] $revisionHistory
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereStartWorkingDate($value)
  */
 class User extends Authenticatable implements MustVerifyEmail, HasMedia, HasLocalePreference
 {

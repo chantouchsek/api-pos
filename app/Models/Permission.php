@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Traits\Searchable;
+use Kyslik\ColumnSortable\Sortable;
 use Spatie\Permission\Models\Permission as BasePermission;
 
 /**
@@ -29,10 +30,12 @@ use Spatie\Permission\Models\Permission as BasePermission;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Permission whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Permission search($search, $threshold = null, $entireText = false, $entireTextOnly = false)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Permission searchRestricted($search, $restriction, $threshold = null, $entireText = false, $entireTextOnly = false)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Permission sortable($defaultParameters = null)
  */
 class Permission extends BasePermission
 {
-    use Searchable;
+    use Searchable,
+        Sortable;
 
     /**
      * Searchable rules.
@@ -50,6 +53,15 @@ class Permission extends BasePermission
         'columns' => [
             'permissions.name' => 10
         ]
+    ];
+
+    /**
+     * @var array
+     */
+    public $sortable = [
+        'name',
+        'id',
+        'guard_name'
     ];
 
     /**

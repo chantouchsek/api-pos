@@ -42,7 +42,9 @@ class PermissionController extends Controller
             $this->setPagination($request->get('limit'));
         }
 
-        $pagination = Permission::search($request->get('q'), null, true)->paginate($this->getPagination());
+        $pagination = Permission::search($request->get('q'), null, true)
+            ->sortable()
+            ->paginate($this->getPagination());
 
         $data = $this->transformer->transformCollection(collect($pagination->items()));
 

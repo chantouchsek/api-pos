@@ -43,7 +43,9 @@ class RoleController extends Controller
             $this->setPagination($request->get('limit'));
         }
 
-        $pagination = Role::search($request->get('q'), null, true)->paginate($this->getPagination());
+        $pagination = Role::search($request->get('q'), null, true)
+            ->sortable()
+            ->paginate($this->getPagination());
 
         $data = $this->transformer->transformCollection(collect($pagination->items()));
 
