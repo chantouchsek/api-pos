@@ -30,6 +30,14 @@ Route::namespace('Admin')->group(function () {
     Route::resource('categories', 'CategoryController');
     Route::resource('roles', 'RoleController', ['except' => ['create', 'edit']]);
     Route::resource('permissions', 'PermissionController', ['except' => ['create', 'edit']]);
-
+    Route::namespace('Product')->prefix('products')->name('products.')->group(function () {
+        Route::resource('{product}/revisions', 'RevisionController', ['only' => ['index']]);
+        Route::resource('imports', 'ImportController', ['only' => ['store']]);
+    });
+    Route::resource('products', 'ProductController', ['except' => ['create', 'edit']]);
+    Route::resource('gift-cards', 'GiftCardController', ['except' => ['create', 'edit']]);
+    Route::resource('expenses', 'ExpenseController', ['except' => ['create', 'edit']]);
+    Route::resource('suppliers', 'SupplierController', ['except' => ['create', 'edit']]);
+    Route::resource('customers', 'CustomerController', ['except' => ['create', 'edit']]);
 });
 

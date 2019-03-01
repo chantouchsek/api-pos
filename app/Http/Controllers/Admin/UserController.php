@@ -12,6 +12,7 @@ use App\Models\Role;
 use App\Traits\Authorizable;
 use App\Transformers\UserTransformer;
 use App\Http\Controllers\Controller;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -47,7 +48,7 @@ class UserController extends Controller
             $this->setPagination($request->get('limit'));
         }
 
-        $pagination = $user->when($request->input('active'), function ($query) use ($request) {
+        $pagination = $user->when($request->input('active'), function (Builder $query) use ($request) {
             return $query->where('active', $request->input('active', 1));
         })
             ->search($request->get('q'), null, true)
