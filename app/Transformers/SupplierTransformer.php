@@ -20,7 +20,8 @@ class SupplierTransformer extends BaseTransformer
             'name' => (string)$item->name,
             'email' => (string)$item->email,
             'phone_number' => (string)$item->phone_number,
-            'address' => (string)$item->address
+            'address' => (string)$item->address,
+            'user' => $item->user
         ];
     }
 }

@@ -39,5 +39,6 @@ Route::namespace('Admin')->group(function () {
     Route::resource('expenses', 'ExpenseController', ['except' => ['create', 'edit']]);
     Route::resource('suppliers', 'SupplierController', ['except' => ['create', 'edit']]);
     Route::resource('customers', 'CustomerController', ['except' => ['create', 'edit']]);
+    Route::resource('purchases', 'PurchaseController', ['except' => ['create', 'edit']]);
 });
 

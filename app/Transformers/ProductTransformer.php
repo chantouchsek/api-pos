@@ -29,11 +29,12 @@ class ProductTransformer extends BaseTransformer
             'user' => $item->user,
             'cost' => (float)$item->cost,
             'price' => (float)$item->price,
-            'file' => (boolean)$item->hasMedia('feature-image') ? config('app.url') . $item->getMedia('feature-image')->first()->getUrl() : 'http://i.pravatar.cc/500?img=' . $item->id,
+            'file' => (string)$item->hasMedia('feature-image') ? config('app.url') . $item->getMedia('feature-image')->first()->getUrl() : 'http://i.pravatar.cc/500?img=' . $item->id,
             'tax_rate' => $item->tax_rate,
             'tax_method' => $item->tax_method,
             'qty' => $item->qty,
-            'qty_method' => $item->qty_method
+            'qty_method' => $item->qty_method,
+            'updated_at' => isset($item->updated_at) ? $item->updated_at->toDateTimeString() : ''
         ];
     }
 }
