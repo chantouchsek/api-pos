@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Admin\Category;
+namespace App\Http\Requests\Admin\Sale;
 
 use App\Http\Requests\BaseRequest as FormRequest;
 

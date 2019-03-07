@@ -135,7 +135,7 @@ class SaleController extends Controller
                 $i = 0;
                 foreach ($products as $product) {
                     $product->update([
-                        'qyt' => $product['qty'],
+                        'qty' => $product['qty'],
                         'price' => $product['price'],
                         'sub_total' => $product['sub_total']
                     ]);
