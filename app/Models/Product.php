@@ -6,6 +6,7 @@ use App\Traits\RevisionableUpgrade;
 use App\Traits\Searchable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Facades\DB;
 use Kyslik\ColumnSortable\Sortable;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
@@ -195,6 +196,15 @@ class Product extends Model implements HasMedia
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * @return BelongsToMany
+     */
+    public function sales(): BelongsToMany
+    {
+        return $this->belongsToMany(Product::class, 'sale_products', 'product_id', 'sale_id')
+            ->withPivot(['qty', 'price', 'sub_total'])->withTimestamps();
     }
 
     /**

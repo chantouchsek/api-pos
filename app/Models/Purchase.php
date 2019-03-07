@@ -54,6 +54,7 @@ use Webpatser\Uuid\Uuid;
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Purchase withTrashed()
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Purchase withoutTrashed()
  * @mixin \Eloquent
+ * @property-read \App\Models\Supplier|null $supplier
  */
 class Purchase extends Model implements HasMedia
 {
