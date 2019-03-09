@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Sale\StoreRequest;
+use App\Models\Product;
 use App\Models\Sale;
 use App\Models\SaleProduct;
 use App\Traits\Authorizable;
@@ -90,6 +91,8 @@ class SaleController extends Controller
                     'price' => $product['price'],
                     'sub_total' => $product['sub_total']
                 ]);
+                $findProduct = Product::find($product['id']);
+                $findProduct->qtyDecrement($product['qty']);
             }
         }
 

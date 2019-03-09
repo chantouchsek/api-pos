@@ -321,6 +321,7 @@ class User extends Authenticatable implements MustVerifyEmail, HasMedia, HasLoca
 
     /**
      * @param $value
+     * @throws \Exception
      */
     public function setStartWorkingDateAttribute($value)
     {
@@ -329,6 +330,7 @@ class User extends Authenticatable implements MustVerifyEmail, HasMedia, HasLoca
 
     /**
      * @param $value
+     * @throws \Exception
      */
     public function setDateOfBirthAttribute($value)
     {

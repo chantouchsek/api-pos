@@ -61,6 +61,12 @@ use Webpatser\Uuid\Uuid;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Sale whereUserId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Sale whereUuid($value)
  * @mixin \Eloquent
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\SalePayment[] $payments
+ * @method static bool|null forceDelete()
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Sale onlyTrashed()
+ * @method static bool|null restore()
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Sale withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Sale withoutTrashed()
  */
 class Sale extends Model implements HasMedia
 {

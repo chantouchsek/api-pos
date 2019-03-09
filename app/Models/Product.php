@@ -69,6 +69,7 @@ use Webpatser\Uuid\Uuid;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Product whereQtyMethod($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Product whereTaxMethod($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Product whereTaxRate($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Product[] $sales
  */
 class Product extends Model implements HasMedia
 {
@@ -215,5 +216,21 @@ class Product extends Model implements HasMedia
     {
         $this->addMediaConversion('feature-image')->crop('crop-center', 250, 250)
             ->quality(100)->nonQueued();
+    }
+
+    /**
+     * @param $qty
+     */
+    public function qtyDecrement($qty)
+    {
+        static::decrement('qty', $qty);
+    }
+
+    /**
+     * @param $qty
+     */
+    public function qtyIncrement($qty)
+    {
+        static::increment('qty', $qty);
     }
 }
