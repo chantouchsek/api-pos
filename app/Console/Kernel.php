@@ -3,7 +3,6 @@
 namespace App\Console;
 
 use App\Console\Commands\AuthPermissionCommand;
-use App\Console\Commands\EnsureQueueListenerIsRunning;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -15,8 +14,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        AuthPermissionCommand::class,
-        EnsureQueueListenerIsRunning::class
+        AuthPermissionCommand::class
     ];
 
     /**
@@ -29,7 +27,9 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')
         //          ->hourly();
-        $schedule->command('queue:checkup')->everyMinute();
+        $schedule->command('queue:listen --timeout=60 --sleep=5 --tries=3')
+            ->cron('* * * * * *')
+            ->withoutOverlapping();
     }
 
     /**
