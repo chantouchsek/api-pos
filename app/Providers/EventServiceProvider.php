@@ -27,6 +27,16 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\User\Deleted' => [
             'App\Listeners\User\Deleted'
         ],
+        // Sales
+        'App\Events\Sale\Created' => [
+            'App\Listeners\Sale\Created'
+        ],
+        'App\Events\Sale\Updated' => [
+            'App\Listeners\Sale\Updated'
+        ],
+        'App\Events\Sale\Deleted' => [
+            'App\Listeners\Sale\Deleted'
+        ]
     ];
 
     /**

@@ -43,3 +43,4 @@ Route::namespace('Admin')->group(function () {
     Route::resource('sales', 'SaleController', ['except' => ['create', 'edit']]);
 });
 
+Route::post('send-email', 'SendEmailController@simulate');
