@@ -3,7 +3,9 @@
 namespace App\Models;
 
 use App\Traits\Searchable;
+use BrianFaust\Commentable\Traits\HasComments;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -73,12 +75,18 @@ class Sale extends Model implements HasMedia
     use Searchable,
         Sortable,
         SoftDeletes,
-        HasMediaTrait;
+        HasMediaTrait,
+        HasComments;
 
     protected $fillable = [
         'uuid', 'sale_number', 'customer_id', 'user_id', 'date', 'total',
         'grand_total', 'paid', 'tax', 'discount', 'status', 'notes'
     ];
+
+    /**
+     * @var array
+     */
+    protected $dates = ['date'];
 
     /**
      * Searchable rules.
@@ -97,7 +105,11 @@ class Sale extends Model implements HasMedia
             'sale_number' => 10,
             'date' => 1,
             'total' => 5,
-            'paid' => 5
+            'paid' => 5,
+            'grand_total' => 6,
+            'tax' => 5,
+            'discount' => 5,
+            'status' => 5
         ]
     ];
 
@@ -105,7 +117,7 @@ class Sale extends Model implements HasMedia
      * @var array
      */
     public $sortable = [
-        'sale_number', 'id', 'date', 'total', 'paid'
+        'sale_number', 'id', 'date', 'total', 'paid', 'discount', 'status', 'tax'
     ];
 
     /**
@@ -155,7 +167,8 @@ class Sale extends Model implements HasMedia
     public function products(): BelongsToMany
     {
         return $this->belongsToMany(Product::class, 'sale_products', 'sale_id', 'product_id')
-            ->withPivot(['qty', 'price', 'sub_total'])->withTimestamps();
+            ->withPivot(['qty', 'price', 'sub_total'])
+            ->withTimestamps();
     }
 
     /**

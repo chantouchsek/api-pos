@@ -13,6 +13,7 @@
         "cviebrock/eloquent-sluggable": "^4.8",
         "darkaonline/l5-swagger": "^5.8",
         "doctrine/dbal": "^2.9",
+        "faustbrian/laravel-commentable": "^3.2",
         "fideloper/proxy": "^4.1",
         "kyslik/column-sortable": "^5.8",
         "laravel-notification-channels/onesignal": "^1.2",

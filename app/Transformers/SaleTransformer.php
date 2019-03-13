@@ -26,7 +26,10 @@ class SaleTransformer extends BaseTransformer
             'tax' => (float)$item->tax,
             'discount' => (float)$item->discount,
             'status' => (int)$item->status,
-            'notes' => (string)$item->notes
+            'notes' => (string)$item->notes,
+            'products' => collect($item->products),
+            'payments' => collect($item->payments),
+            'customer' => $item->customer
         ];
     }
 }
