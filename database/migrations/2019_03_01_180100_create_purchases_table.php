@@ -61,7 +61,7 @@ class CreatePurchasesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('purchases');
         Schema::dropIfExists('purchase_products');
+        Schema::dropIfExists('purchases');
     }
 }

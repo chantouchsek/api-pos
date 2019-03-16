@@ -2,17 +2,17 @@
 
 namespace App\Models;
 
-use App\Traits\RevisionableUpgrade;
+//use App\Traits\RevisionableUpgrade;
 use App\Traits\Searchable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Support\Facades\DB;
+//use Illuminate\Support\Facades\DB;
 use Kyslik\ColumnSortable\Sortable;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use Spatie\MediaLibrary\Models\Media;
-use Venturecraft\Revisionable\RevisionableTrait;
+//use Venturecraft\Revisionable\RevisionableTrait;
 use Webpatser\Uuid\Uuid;
 
 /**
@@ -75,9 +75,7 @@ class Product extends Model implements HasMedia
 {
     use Searchable,
         Sortable,
-        HasMediaTrait,
-        RevisionableTrait,
-        RevisionableUpgrade;
+        HasMediaTrait;
 
     protected $fillable = [
         'name',
