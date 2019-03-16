@@ -6,7 +6,7 @@ use App\Events\User\Created;
 use App\Events\User\Deleted;
 use App\Events\User\Updated;
 use App\Notifications\ResetPasswordNotification;
-use App\Traits\RevisionableUpgrade;
+//use App\Traits\RevisionableUpgrade;
 use App\Traits\Searchable;
 use Carbon\Carbon;
 use Illuminate\Contracts\Translation\HasLocalePreference;
@@ -23,7 +23,7 @@ use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use Spatie\MediaLibrary\Models\Media;
 use Spatie\Permission\Traits\HasRoles;
-use Venturecraft\Revisionable\RevisionableTrait;
+//use Venturecraft\Revisionable\RevisionableTrait;
 use Webpatser\Uuid\Uuid;
 
 /**
@@ -100,9 +100,7 @@ class User extends Authenticatable implements MustVerifyEmail, HasMedia, HasLoca
         HasRoles,
         Searchable,
         HasMediaTrait,
-        Sortable,
-        RevisionableTrait,
-        RevisionableUpgrade;
+        Sortable;
 
     /**
      * The attributes that are mass assignable.
