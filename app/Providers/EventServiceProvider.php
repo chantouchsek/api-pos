@@ -37,11 +37,16 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\Sale\Deleted' => [
             'App\Listeners\Sale\Deleted'
         ],
+        // Send email
         'App\Events\Mail\Sent' => [
             'App\Listeners\Mail\Sent'
         ],
         'App\Events\Mail\Queued' => [
             'App\Listeners\Mail\Queued'
+        ],
+        // Send sale comment
+        'App\Events\Sale\Comment\Created' => [
+            'App\Listeners\Sale\Comment\Created'
         ]
     ];
 

@@ -41,6 +41,9 @@ Route::namespace('Admin')->group(function () {
     Route::resource('customers', 'CustomerController', ['except' => ['create', 'edit']]);
     Route::resource('purchases', 'PurchaseController', ['except' => ['create', 'edit']]);
     Route::resource('sales', 'SaleController', ['except' => ['create', 'edit']]);
+    Route::namespace('Sale')->group(function () {
+        Route::resource('sales.comments', 'CommentController', ['except' => ['create', 'edit']]);
+    });
 });
 
 Route::post('send-email', 'SendEmailController@simulate');
